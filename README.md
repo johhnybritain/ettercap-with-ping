@@ -35,9 +35,9 @@ Using ettercap ARP poisoning to intercept all xbox live traffic.
 TIMESTAMP=$(date +%d%m%y-%H%M%S)
 ettercap -Tq -g /home/user/Development/geoip/GeoLite2-City.mmdb -f "(ether src 30:59:b7:48:cf:3b) or 
 (ether src e4:f4:c6:8b:5a:9c)" -l ettercap.log -m ettercap.msg -w ettercap-${TIMESTAMP}.pcap -i eth0 
--M arp:remote /192.168.1.19/ /192.168.1.1/ -P autoadd
+-M arp:remote /192.168.1.100/ /192.168.1.1/ -P autoadd
 
-XBOX IP: 192.168.1.19
+XBOX IP: 192.168.1.100
 XBOX MAC: 30:59:b7:48:cf:3b
 Internet Router IP: 192.168.1.1
 Internet Router MAC: e4:f4:c6:8b:5a:9c
