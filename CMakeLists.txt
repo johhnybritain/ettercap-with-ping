@@ -17,6 +17,7 @@ option(ENABLE_PDF_DOCS "Enable PDF document generation" OFF)
 option(ENABLE_TESTS "Enable Unit Tests" OFF)
 option(LIBRARY_BUILD "Build for libettercap only" OFF)
 option(INSTALL_DESKTOP "Install ettercap desktop files" ON)
+option(ENABLE_MAXMDB "Enable MaxMindDB" OFF)
 
 
 SET(VALID_BUILD_TYPES Debug Release)

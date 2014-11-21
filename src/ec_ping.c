@@ -82,7 +82,7 @@ char pkg[] = "netkit-base-0.10";
 #include <stdio.h>
 #include <ctype.h>
 #include <errno.h>
-#include <lft/whois.h>
+#include <whois.h>
 
 /*
  * Note: on some systems dropping root makes the process dumpable or
