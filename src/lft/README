@@ -1,0 +1,33 @@
+				
+# This file is part of LFT.
+#
+# The LFT software provided in this Distribution is
+# Copyright 2007 VOSTROM Holdings, Inc.
+#
+# The full text of our legal notices is contained in the file called
+# COPYING, included with this Distribution.
+
+
+1) LFT stands for "Layer Four Traceroute"
+
+2) We advise you to acquire the latest version of LFT before installing
+   LFT's web site is located at http://pwhois.org/lft/
+
+3) Please read the "INSTALL" file for instructions on installing LFT
+
+4) Please read the LFT manual page for instructions on using LFT (lft.8)
+
+5) LFT also includes "whob" (a whois client for Internet operators)
+   WhoB has its own manual page (whob.8).
+
+6) The authors may be reached via e-mail at lft-bugs@oppleman.com
+   We welcome your feedback.  We also welcome your contributions. 
+   If you're interested in helping us make LFT better, please
+   contact us.
+
+7) Our road map for where we're taking the software may be found in 
+   the "TODO" file.
+
+8) LFT's history of changes can be found in the "CHANGELOG"
+
+ENJOY!

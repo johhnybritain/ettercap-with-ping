@@ -1,0 +1,12 @@
+
+LFT TO-DO
+---------
+
+Features to ADD (not in any particular order)
+
+ - TCP-based tracing on windows doesn't work because of "security features"
+ - IPv6 support, or AF-independent source
+ - path MTU auto-discovery (RFC 1191)
+ - display min/avg/max/stddev RTT instead of just the sample
+ - asynchronus DNS queries
+ - implement target fingerprinting using TCP timestamps option (RFC 1323)

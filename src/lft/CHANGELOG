@@ -1,0 +1,315 @@
+
+LFT CHANGELOG 
+
+
+lft 3.71 / WhoB 3.71
+----------------------
+- WhoB: Autodetect input from STDIN (pipe) without '-f -'
+- WhoB: Redirect some extraneous output to STDERR 
+
+
+lft 3.7 / WhoB 3.7
+----------------------
+- Added support for 4-byte ASNs
+- Added support for whob reading bulk input from stdin using '-f -'
+
+
+lft 3.6 / WhoB 3.6
+----------------------
+- Added support for 4-byte ASNs
+
+
+lft 3.5 / WhoB 3.5
+----------------------
+- Roy T. provided DNS speed-ups
+- Added GraphViz output option with -g
+
+
+lft 3.35 / WhoB 3.5
+----------------------
+- Roy T. provided some clean-ups to avoid double free()s 
+- Bug fixes only
+
+
+lft 3.33 / WhoB 3.5
+----------------------
+- Fixed free(sess->hostname) bug (segfault on unresolvable hostname)
+- Improved error hanlding of pcap failures related to data link type
+- Kurt's FreeBSD fix for pcap snprintf
+- Bug fixes only
+
+
+lft 3.32 / WhoB 3.5
+----------------------
+- Added support for several encapsulating protocols such as PPP
+- no other changes
+
+
+lft 3.31 / WhoB 3.5
+----------------------
+- Added #define for AI_NUMERICSERV undeclared on some platforms/versions
+- No other changes
+
+
+lft 3.3 / WhoB 3.5
+----------------------
+- Improved LFT target detection behind firewalls
+- Updated LFT for newer pcap version defaults
+- WhoB ignores comments [#,;] in input files
+- Added LFT option -f to specify fake source address
+- Applied many, many, many fixes from Juli M. of USA -- Thanks!
+- Applied many, many, many fixes from Markus Gothe of Sweden -- Thanks!
+
+
+lft 3.2 / WhoB 3.2
+----------------------
+- Added support for 802.1q tagged VLANs
+- Manual page corrections (thanks to Brett)
+- WhoB will use Prefix WhoIs for bulk file resolution in
+  Cymru-compatible format with '-c' but Cymru will be used 
+  with '-C'
+
+
+lft 3.1 / WhoB 3.1
+----------------------
+- New configure options:
+  --enable-gtod Forces LFT to use gettimeofday() on each packet instead of 
+  using the BPF timestamp. This is critical on platforms that have enabled
+  'fastts' or that do not have high-precision BPF timestamping.
+  --enable-universal generates binaries including both PPC and Intel architecture 
+  (for users running Mac OS X/Darwin)
+- Improved compatibility with NetBSD and Darwin/Mac OS X
+- Added autoconf support for NetBSD
+- Improved compatibility with older compilers (thanks to Sean)
+- Updated autoconf bits and pieces
+- By popular request, reversed the -g option of WhoB
+  WhoB now uses gigo mode by default unless -g is specified which turns
+  ON its parser and enables the other various options
+
+
+lft 3.0
+----------------------
+- Completely refactored and now a workable library
+- LFT has a new (-b) TCP Basic trace method that makes TCP traces NAT-friendly
+- LFT has a new (-p) ICMP trace method that uses echo requests to trace paths
+- Many memory issues fixed 
+- Cleanup of several 2.6b5-3.0b features
+
+
+lft 2.6 / WhoB 2.0
+----------------------
+- LFT prints 'open' in the target block if the target dest port is open
+- LFT indicates the reason it marked ports open/closed in verbose(2) output 
+- LFT prints an asterisk when it retransmits a packet after a timeout
+- LFT uses Prefix WhoIs (bulk) or RISWHOIS (bulk) for netname resolution
+- LFT has a new (-u) traditional UDP-based tracing feature
+- LFT displays start and finish times/dates when using the (-T) option
+- LFT has a new (-U) feature to display all times in UTC/GMT0
+- LFT only shows time spent tracing/resolving at verbosity level 1 or higher
+- LFT sets the ToS bit on outgoing IP datagrams when (-I) option is used
+- LFT gets timevals from packets instead of calling gettimeofday()
+- LFT won't be fooled into thinking there's a firewall on a gateway just
+  because adaptive mode ups the state waiting for replies that never come
+- Improved LFT performance (removed gettimeofday() on each packet)
+- WhoB/library uses Prefix WhoIs to resolve OrgNames and NetNames
+- WhoB/library has improved support for RIPE NCC RIS and Prefix WhoIs
+- WhoB supports bulk resolution (-f option) from an input file
+- WhoB also supports one-per-line output (-cf option) from a bulk input file
+- WhoB will use putenv() on Solaris who is missing setenv() to set TZ
+- WhoB has a new (-g) feature to take input directly from the command line 
+  and print output directly from Prefix WhoIs (referred to as GIGO)
+- Added $DESTDIR support to Makefile (thanks Daniel)
+- Fixed an off-by-one bug in LFT related to ASN display encountered when 
+  a trace contains one or more neglected TTLs
+- Fixed an off-by-one bug in LFT's verbose output regarding TTLs
+- Fixed variable ordering in whois.c from 2.6b1 (thanks Erick) 
+- Numerous platform-specific improvements
+- Reconfigured autoconf and segregated ./config/
+- Updated autoconf components to v2.59
+
+
+lft 2.5 / WhoB 1.5
+----------------------
+- Inclusive of betas 2.32 to 2.4x
+- Added -z option to pseudo-randomize source port
+- Added behavior to automatically select the most appropriate interface
+  based on routing (this was on the most wanted list)
+- Improved OpenBSD compatibility (IP length nonzero)
+- OpenBSD is now detected by autoconf (for configuring the above)
+- Darwin is now detected by autoconf and its definition disables
+  some BSD features to make it compatible with MacOS X and Darwin
+- LFT now indicates it has reached the target by printing a 'T'
+  character in the status display (if status is enabled)
+- Cleanups were made to the verbose output levels (-VVV)
+- Significantly revamped whois framework makes it easy to include
+  whois functionality into other programs
+- Added -C and -R and -r options to force alternate ASN sources:
+    - (r)IPE RIS - special thanks to Rene Wilhelm @ RIPE NCC
+    - (C)ymru 
+    - (R)ADB 
+- Default ASN source (-A) is now Prefix WhoIs (see pwhois.org)
+- LFT now queries for ASNs in bulk format after completing
+  a trace if pwhois (default), RIPE NCC RIS, or Cymru is selected
+- Added dst/src port autoselection based on user-supplied hostname
+- Vastly improved standalone whois client "whob" see whob.8 (whob manpage)
+- Makefile now installs 'whob' no-frills whois client (try ./whob)
+- "Smart" mode is now referred to as "Adaptive" mode (-E)
+
+
+lft 2.31
+--------------------
+- Fixed time precision on FreeBSD 5.3 (Thanks to Kurt Jaeger)
+
+
+lft 2.3:
+--------------------
+- added WSAIoctl() call to select proper IF on windows based on dest (thanks Graham!)
+- lowered max_retries to a default of 2
+- cleaned up formatting related to -S option
+- cleaned up verbose output to be more friendly
+- cleaned up error messages
+- updated manpage
+- updated spec file
+
+
+lft 2.2:
+--------------------
+- removed dependence on regex library
+- removed dependence on INT_MAX
+- fixed whois code to get the most specific netblock instead of the least specific netblock
+- can now specify interface by IP instead of by name
+
+
+lft 2.1:
+--------------------
+
+- Added autoconf support
+- Ported to cygwin
+- Fixed the Solaris and BSD makefiles (manpage install errors)
+- Modified the whois code to resolve ASN and netname lookup 
+    problems with RIPE entries.  (-A) and (-N) code...
+- Modified the whois code to support local-as
+- Vastly streamlined the (-V) verbose output to cover the 
+    important information (sequence, etc) of all packets
+    sent and received
+
+
+lft 2.0 (and betas):
+--------------------
+
+- (-E) and (-F) shouldn't be used at the same time, now LFT knows that
+- Implemented fixes that enable LFT to run under Solaris/SPARC (Jim McKim)
+- Changed name from FFT to LFT (layer four trace)
+- Added ICMP messages for codes 13-15 
+- Changed the (-P) option added in 1.99 to (-E) in order to force use of  
+    the new "smart" engine
+- Enhanced stateful firewall (packet filter) detection en route
+- Engine: "smart" mode now tries FIN, SYN, etc table to get packets through
+    which dramatically improves its "find a way" capability
+- Engine: "smart" mode now detects the BSD bug properly
+- Engine: "smart" mode now detects firewalls in transit
+- Compilation: made lft_queue.h the default for all OSs
+- UI: lots of user interface changes
+
+
+lft 1.99-beta(s):
+--------------------
+
+- Added Loose Source Routing feature (LSRR) [<gateway> <...>] <target>
+- Added (-N) Netblock name lookup feature 
+- Added (-A) ASN lookup feature 
+- Added (-P) option to automatically send 3 probes for more stats 
+- Added (-V) lots of verbose debugging information
+- Added (-F) feature to revert to sending FIN packets
+- Added (-T) option to show trace and resolution timings (LFT is fast)
+- Added BSD 4.[23] and derivative (bug) inappropriate TTL detection
+- Engine: Use sequence numbers as packet ID instead of destination port
+    numbers. This achieves a number of goals: 
+    Return ICMP and TCP packets are more uniquely identified. 
+    It is now possible to check the route for specific destination
+    port, which is important if route varies based on port (such
+    as with transparent proxying using a load balancing switch on
+    port 80)  (thank you Ugen!)
+- Engine: Send SYN packets. Variety of firewalls and NAT devices won't 
+    pass through a single TCP packet that is not a part of established
+    connection, unless it carries SYN flag only (initial packet). 
+    Pitfall: this may create useless PCB blocks on destination host,
+    if it does not use SYN cookies or some other SYN flood protection.
+    However it's better then not being able to use lft from behind
+    firewalls.  (thank you Ugen!)
+- Renamed (-H) max hops/ttl option 
+- UI cleaned up in several areas, especially result list & RTT display
+- Detect local packet filter
+
+
+lft 1.91:
+---------------------
+
+- Fixed Makefile.solaris (last time we'll see this before autoconf)
+- added <sockio.h> for Solaris
+
+lft 1.9:
+--------------------
+
+- Default source port is now 53/tcp (dns-xfer)
+- Configurable source port on command line through -p or host:port
+- Configurable initial destination port on command line using -d 
+- Source and Destination ports use /etc/services for lookup
+- Fixed a bug that created a gethostbyaddr() call even when the user
+  specified NOT to do reverse DNS lookups -- makes -n option way faster!
+- Changed the way lft auto-detects the IP address of the interface selected
+   * now, we determine what address is assigned to the interface instead of
+     just getting the hosts's primary/default address and using it
+   * thanks, Aaron, for bringing this to our attention! 
+   * thanks, Lane, for coming up with a platform-independent 
+     way of making it work.
+
+
+lft 1.8:
+--------------------
+
+- added option to suppress status indicator and only show trace (or errors)
+   * people using lft from a web page wanted this
+- added option to select the network interface used as hop zero
+   * string length of device is tested to avoid potential buffer overflows
+- modified the status bar to display:
+
+Send mode: ->( <packet number> / <TTL of packet> )
+Recv mode: <{ <TTL of packet received> }
+
+Additional testing platforms for this release:
+
+- Aaron Bentley (Univ Toronto) tested lft successfully under Debian Woody Linux
+   * Aaron also contributed a variation of net device selection -- thanks
+
+
+lft 1.7:
+--------------------
+
+- added option to disable reverse DNS host lookups
+- made several areas slightly more user-friendly
+- modified the status bar to display:
+
+Send mode: ->( <packet number> / <TTL of packet> )
+Recv mode: <( <TTL of packet received> )
+
+- changed "source" port from tcp/80 to tcp/25
+
+most firewalls today permit tcp_established implicitly, not traffic
+from tcp/80 explicitly, therefore we figured sending packets from 
+tcp/25 would be more likely to get through.
+
+- modified initialization of 32-bit unsigned integer used to 
+  calculate checksum
+
+LFT now builds again under Solaris, but still miscalculates checksums 
+
+- fixed round trip time calculation 
+- several other minor tweaks
+- tested under RedHat Linux, Darwin 5.5 (MacOS X v10.1) 
+
+lft 1.6 (nils):
+---------------
+
+- Great idea.
+
