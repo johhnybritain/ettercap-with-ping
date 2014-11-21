@@ -181,7 +181,8 @@ add_library(lib_ettercap SHARED ${EC_SRC})
 add_dependencies(lib_ettercap libnet)
 
 IF(ENABLE_MAXMDB)
-  add_dependencies(libmaxminddb)
+  add_dependencies(lib_ettercap libmaxminddb)
+  set(HAVE_MAXMDB 1)
 endif(ENABLE_MAXMDB)
 
 if (NOT LIBRARY_BUILD)

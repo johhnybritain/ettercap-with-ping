@@ -40,6 +40,8 @@
 #cmakedefine HAVE_GTK
 #cmakedefine HAVE_OPENSSL
 
+#cmakedefine HAVE_MAXMDB
+
 #cmakedefine HAVE_UTF8
 #cmakedefine HAVE_PLUGINS
 #cmakedefine WITH_IPV6

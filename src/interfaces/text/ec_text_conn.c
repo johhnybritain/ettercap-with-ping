@@ -66,7 +66,7 @@ void text_pinger(int ping)
    void *list;
    char *desc, *tmpdesc;
 
-   SAFE_CALLOC(desc, 200, sizeof(char));
+   SAFE_CALLOC(desc, 512, sizeof(char));
 
    /* retrieve the first element */
    list = pingtrack_print(0, NULL, NULL, 0, ping);
@@ -77,7 +77,7 @@ void text_pinger(int ping)
    while(list) {
       /* get the next element */
 	  tmpdesc = desc;
-      list = pingtrack_print(+1, list, &tmpdesc, 199, ping);
+      list = pingtrack_print(+1, list, &tmpdesc, 511, ping);
       if ( tmpdesc != NULL )
          fprintf(stdout, "%s\n", tmpdesc);
    }

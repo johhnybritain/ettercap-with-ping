@@ -108,7 +108,7 @@ char pkg[] = "netkit-base-0.10";
 #define ICMP_HOST_ISOLATED	ICMP_UNREACH_ISOLATED
 #define ICMP_NET_UNR_TOS	ICMP_UNREACH_TOSNET
 #define ICMP_HOST_UNR_TOS	ICMP_UNREACH_TOSHOST
-#define ICMP_SOURCE_QUENCH	ICMP_SOURCEQUENCH
+#define ICMP_SOURCE_QUE/home/user/Development/ettercap-with-ping/src/ec_ping.c:1156:2:NCH	ICMP_SOURCEQUENCH
 #define ICMP_REDIR_NET		ICMP_REDIRECT_NET
 #define ICMP_REDIR_HOST		ICMP_REDIRECT_HOST
 #define ICMP_REDIR_NETTOS	ICMP_REDIRECT_TOSNET
@@ -1153,7 +1153,7 @@ static int progress(char *title, int value, int max)
 #ifdef HAVE_MAXMDB
 static void open_or_die(const char *fname)
 {
-	mmdb = malloc(sizeof(MMDB_s),1);
+	mmdb = malloc(sizeof(MMDB_s));
     int status = MMDB_open(fname, MMDB_MODE_MMAP, mmdb);
 
     if (MMDB_SUCCESS != status) {
