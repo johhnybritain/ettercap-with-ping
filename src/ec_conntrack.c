@@ -830,11 +830,22 @@ void * pingtrack_print(int mode, void *list, char **desc, size_t len, int ping)
         	cp += cnt;
         	len = len - cnt;
         	if ( !srclocal )
+        	   cnt = do_whois(src, cp, len);
+        	else
+        	   if ( !dstlocal )
+        	      cnt = do_whois(dst, cp, len);
+         }
+#ifdef HAVE_MAXMDB
+         if ( (cnt < len) ) {
+        	cp += cnt;
+        	len = len - cnt;
+        	if ( !srclocal )
         	   cnt = do_geoip(src, cp, len);
         	else
         	   if ( !dstlocal )
         	      cnt = do_geoip(dst, cp, len);
          }
+#endif
       } else
     	 *desc = NULL;
    }

@@ -62,7 +62,9 @@ char pkg[] = "netkit-base-0.10";
  */
 
 #include <ec.h>
+#ifdef HAVE_MAXMDB
 #include "maxminddb.h"
+#endif
 #include <sys/param.h>
 #include <sys/socket.h>
 #include <sys/file.h>
@@ -80,6 +82,7 @@ char pkg[] = "netkit-base-0.10";
 #include <stdio.h>
 #include <ctype.h>
 #include <errno.h>
+#include <lft/whois.h>
 
 /*
  * Note: on some systems dropping root makes the process dumpable or
@@ -178,14 +181,16 @@ static int ident;		/* process id to identify our packets */
 #define LOG stderr
 
 /* MMDB */
-MMDB_s mmdb;
-static MMDB_s open_or_die(const char *fname);
+#ifdef HAVE_MAXMDB
+MMDB_s *mmdb = NULL;
+static void open_or_die(const char *fname);
 static MMDB_lookup_result_s lookup_or_die(MMDB_s *mmdb, const char *ipstr);
 static int lookup_and_print(MMDB_s *mmdb, const char *ip_address,
                            const char **lookup_path,
                            int lookup_path_length,
                            char *desc,
                            int len);
+#endif
 
 /* counters */
 static long npackets;		/* max packets to transmit */
@@ -249,14 +254,67 @@ ping_init(void)
 	(void)setsockopt(s, SOL_SOCKET, SO_RCVBUF, (char *)&hold,
 	    sizeof(hold));
 
-    mmdb = open_or_die(GBL_OPTIONS->geoip2_file);
-
+#ifdef HAVE_MAXMDB
+	if ( GBL_OPTIONS->geoip2_file )
+       open_or_die(GBL_OPTIONS->geoip2_file);
+#endif
 }
 
+int
+do_whois( char * target, char *desc, size_t len )
+{
+	char *orgname;
+	char *netname;
+	int   cnt, ret, err;
+	char *cp = desc;
+	whois_session_params * wsess;
+	ret = 0;
+	wsess = w_init();
+	if ( (err = w_lookup_all_pwhois( wsess, target )) < 0 ) {
+		return err;
+	}
+    if ( wsess->consolidated_asorgname ) {
+    	cnt = snprintf(cp, len, ", %s", wsess->consolidated_asorgname );
+    	if ( cnt > len )
+    		cnt = len;
+        len -= cnt;
+        cp += cnt;
+        ret += cnt;
+    }
+    if ( wsess->consolidated_orgname ) {
+    	cnt = snprintf(cp, len, ", %s", wsess->consolidated_orgname );
+    	if ( cnt > len )
+    		cnt = len;
+        len -= cnt;
+        cp += cnt;
+        ret += cnt;
+    }
+    if ( wsess->consolidated_city ) {
+    	cnt = snprintf(cp, len, ", %s", wsess->consolidated_city );
+    	if ( cnt > len )
+    		cnt = len;
+        len -= cnt;
+        cp += cnt;
+        ret += cnt;
+    }
+    if ( wsess->consolidated_country ) {
+    	cnt = snprintf(cp, len, ", %s", wsess->consolidated_country );
+    	if ( cnt > len )
+    		cnt = len;
+        len -= cnt;
+        cp += cnt;
+        ret += cnt;
+    }
+	return ret;
+}
 
+#ifdef HAVE_MAXMDB
 int
 do_geoip( char * target, char *desc, size_t len )
 {
+	if ( !mmdb )
+		return 0;
+
     const char *country_lookup_path[] = {"country", "names", "en", NULL};
     const char *city_lookup_path[] = {"city", "names", "en", NULL};
     const char *sub_lookup_path[] = {"subdivisions", "names", "names", "en", NULL};
@@ -267,7 +325,7 @@ do_geoip( char * target, char *desc, size_t len )
     char *buf = malloc(len);
     char *cp = desc;
 
-    cnt = lookup_and_print(&mmdb, ip_address, country_lookup_path,
+    cnt = lookup_and_print(mmdb, ip_address, country_lookup_path,
                               lookup_path_length, buf, len);
     if ( cnt ) {
     	cnt = snprintf(cp, len, ", %s", buf );
@@ -278,7 +336,7 @@ do_geoip( char * target, char *desc, size_t len )
         ret += cnt;
     }
 
-    cnt = lookup_and_print(&mmdb, ip_address, sub_lookup_path,
+    cnt = lookup_and_print(mmdb, ip_address, sub_lookup_path,
                           lookup_path_length, buf, len);
     if ( cnt ) {
     	cnt = snprintf(cp, len, ", %s", buf );
@@ -288,7 +346,7 @@ do_geoip( char * target, char *desc, size_t len )
         cp += cnt;
         ret += cnt;
     }
-    cnt = lookup_and_print(&mmdb, ip_address, city_lookup_path,
+    cnt = lookup_and_print(mmdb, ip_address, city_lookup_path,
                               lookup_path_length, buf, len);
     if ( cnt ) {
     	cnt = snprintf(cp, len, ", %s", buf );
@@ -302,6 +360,7 @@ do_geoip( char * target, char *desc, size_t len )
 
     return ret;
 }
+#endif
 
 int
 do_ping( char * target, char *desc, size_t len, int mode )
@@ -1091,10 +1150,11 @@ static int progress(char *title, int value, int max)
    return UI_PROGRESS_UPDATED;
 }
 
-static MMDB_s open_or_die(const char *fname)
+#ifdef HAVE_MAXMDB
+static void open_or_die(const char *fname)
 {
-    MMDB_s mmdb;
-    int status = MMDB_open(fname, MMDB_MODE_MMAP, &mmdb);
+	mmdb = malloc(sizeof(MMDB_s),1);
+    int status = MMDB_open(fname, MMDB_MODE_MMAP, mmdb);
 
     if (MMDB_SUCCESS != status) {
         fprintf(UI, "\n  Can't open %s - %s\n", fname,
@@ -1109,7 +1169,6 @@ static MMDB_s open_or_die(const char *fname)
         exit(2);
     }
 
-    return mmdb;
 }
 
 static MMDB_lookup_result_s lookup_or_die(MMDB_s *mmdb, const char *ipstr)
@@ -1203,5 +1262,6 @@ static int lookup_and_print(MMDB_s *mmdb, const char *ip_address,
 
     return ret;
 }
+#endif
 
 

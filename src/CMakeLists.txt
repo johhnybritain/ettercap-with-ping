@@ -114,7 +114,12 @@ set(EC_SRC
         protocols/ec_wifi_eapol.c
         protocols/ec_wifi_prism.c
         protocols/ec_wifi_radiotap.c
+        
+        lft/whois.c
 )
+
+include_directories(lft)
+set(LFT_STANDALONE 1)
 
 if (NOT LIBRARY_BUILD)
 	set(EC_SRC ${EC_SRC} ec_interfaces.c)
@@ -173,7 +178,11 @@ if(NOT LIBRARY_BUILD)
 endif(NOT LIBRARY_BUILD)
 
 add_library(lib_ettercap SHARED ${EC_SRC})
-add_dependencies(lib_ettercap libnet libmaxminddb)
+add_dependencies(lib_ettercap libnet)
+
+IF(ENABLE_MAXMDB)
+  add_dependencies(libmaxminddb)
+endif(ENABLE_MAXMDB)
 
 if (NOT LIBRARY_BUILD)
 	add_executable(ettercap ec_main.c)
