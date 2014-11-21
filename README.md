@@ -7,7 +7,7 @@ Developed to intercept traffic for online gaming from consoles like xbox 360, an
 
 Added command line options:
 
--g --geoip2 <file>   to specify location of GeoLite2-City.mmdb file, default is /usr/local/lib/GeoLite2-City.mmdb
+-g --geoip2 <file>   to specify location of GeoLite2-City.mmdb file, default is NULL
 
 -x --ping <count>    to specify the number of ping packets to send, default is 5
 
@@ -31,7 +31,7 @@ Example Usage:
 
 Using ettercap ARP poisoning to intercept all xbox live traffic.
 
-ettercap -Tq -g /home/user/Development/geoip/GeoLite2-City.mmdb -f "(ether src 30:59:b7:48:cf:3b) or 
+ettercap -Tq -f "(ether src 30:59:b7:48:cf:3b) or 
 (ether src e4:f4:c6:8b:5a:9c)" -w ettercap.pcap -i eth0 
 -M arp:remote /192.168.1.100/ /192.168.1.1/ -P autoadd
 
@@ -42,18 +42,25 @@ Internet Router MAC: e4:f4:c6:8b:5a:9c
 
 Specify MAC address filters to avoid duplicate packets being captured for both ingress and egress.
 
+The output is in the following format:
+Source IP:Port - Destination IP:Port Protocol Status, Transmitted Bytes, Received Bytes, Ping response, WHOIS AS-Org-Name, Org-Name, City, Country
+
+e.g.
+
 Active connection list:
 
-    192.168.1.100:3074  -    82.23.12.XXX:3074  U active  TX: 1420176 RX: 0 PING DST min/avg/max: 37.4/39.6/41.7 ms loss: 0%, United Kingdom, England, Dunstable
-    192.168.1.100:3074  -   88.108.47.XXX:3074  U active  TX: 3768 RX: 0 PING DST No Reply, United Kingdom
-    192.168.1.100:3074  - 212.140.202.XXX:3074  U active  TX: 1728 RX: 0 PING DST No Reply, United Kingdom, England, Kings Lynn
-    192.168.1.100:3074  -  109.13.184.XXX:3074  U active  TX: 105822 RX: 0 PING DST No Reply, France, Auvergne, Joze
-    192.168.1.100:3074  -  151.226.57.XXX:3074  U active  TX: 3888 RX: 0 PING DST min/avg/max: 28.2/28.3/28.6 ms loss: 0%, United Kingdom, England, Birmingham
-    192.168.1.100:3074  -     2.30.232.XXX:1024  U active  TX: 3888 RX: 0 PING DST No Reply, United Kingdom, England, Kidderminster
-    192.168.1.100:3074  -      78.34.2.XXX:61355 U active  TX: 99316 RX: 0 PING DST No Reply, Germany, North Rhine-Westphalia, Cologne
-    192.168.1.100:3074  -    65.55.42.XXX:3074  U active  TX: 15239 RX: 0 PING DST min/avg/max: 155.5/155.9/156.8 ms loss: 0%, United States, Washington, Redmond
-    192.168.1.100:3074  -    136.179.4.XXX:3074  U active  TX: 23349 RX: 0 PING DST No Reply, United States, Nevada, Las Vegas
-     82.21.19.XXX:33263 -   192.168.1.XXX:3074  U active  TX: 3422 RX: 3314 PING SRC No Reply, United Kingdom, England, Portsmouth
-    192.168.1.100:3074  -      78.34.2.XXX:3074  U active  TX: 7120 RX: 0 PING DST No Reply, Germany, North Rhine-Westphalia, Cologne
-    86.16.133.XXX:3074  -   192.168.1.XXX:3074  U active  TX: 1094 RX: 938 PING SRC No Reply, United Kingdom, England, Bristol
-    82.34.187.XXX:3074  -   192.168.1.XXX:3074  U active  TX: 938 RX: 1094 PING SRC No Reply, United Kingdom, England, Nailsea
+     192.168.1.19:3076  -  137.135.178.35:31003 U active  TX: 966147 RX: 0 PING DST No Reply, Microsoft Corporation, Microsoft Corp, REDMOND, UNITED STATES
+     192.168.1.19:3076  -  86.142.192.123:3076  U active  TX: 7184 RX: 1707 PING DST No Reply, BT Public Internet Service, BT-CENTRAL-PLUS IP pools, SHEFFIELD, UNITED KINGDOM
+     192.168.1.19:3076  -   82.243.27.158:3076  U active  TX: 7196 RX: 5451 PING DST min/avg/max: 57.4/69.9/92.3 ms loss: 0%, Free SAS, Proxad / Free SAS, CENAC, FRANCE
+     192.168.1.19:3076  -    134.3.233.65:3076  U active  TX: 24655 RX: 446 PING DST min/avg/max: 35.5/40.1/50.5 ms loss: 0%, Kabel BW GmbH, Kabel Baden-Wuerttemberg GmbH & Co. KG, STUTTGART, GERMAN
+     192.168.1.19:3076  -     2.25.152.44:3076  U active  TX: 7486 RX: 4146 PING DST No Reply, Orange Personal Communications Services, Orange WBC Broadband, LONDON, UNITED KINGDOM
+     192.168.1.19:3076  -    46.127.66.92:3776  U active  TX: 7492 RX: 7612 PING DST No Reply, Liberty Global Operations B.V., Cablecom GmbH, CHUR, SWITZERLAND
+     192.168.1.19:3076  -    94.7.242.115:3076  U active  TX: 7378 RX: 9269 PING DST min/avg/max: 25.0/29.4/35.7 ms loss: 0%, British Sky Broadcasting Limited, Sky Broadband, LONDON, UNITED KINGDOM
+     192.168.1.19:3076  -   86.71.206.214:3076  U active  TX: 7498 RX: 4194 PING DST min/avg/max: 65.7/81.4/106.1 ms loss: 0%, Societe Francaise du Radiotelephone S.A, N9UF-DYN-DSL Dynamic pools, PA
+     192.168.1.19:3076  -   91.182.191.76:55053 U active  TX: 5244 RX: 7167 PING DST No Reply, BELGACOM S.A., ADSL-GO-PLUS, BRUSSELS, BELGIUM
+     2.126.92.144:3076  -    192.168.1.19:3076  U active  TX: 3846 RX: 4723 PING SRC min/avg/max: 52.7/56.0/59.7 ms loss: 0%, British Sky Broadcasting Limited, Sky Broadband, LONDON, UNITED KINGDOM
+     192.168.1.19:3076  -    167.12.36.23:3076  U active  TX: 798 RX: 0 PING DST No Reply, ?, ?, ?, ?
+      31.39.57.25:3076  -    192.168.1.19:3076  U active  TX: 3734 RX: 4967 PING SRC No Reply, Bouygues Telecom S.A., BOUYGTEL-ISP-WIRELINE Pool for Broadband DSL Cable customers, VERSAILLES, FRANCE
+     192.168.1.19:3076  -   77.102.192.18:3076  U active  TX: 1484 RX: 880 PING DST No Reply, NTL, KNOWSLEY, AIGBURTH, UNITED KINGDOM
+     192.168.1.19:51626 - 134.170.178.144:443   T active  TX: 2938 RX: 325 PING DST min/avg/max: 163.0/164.1/165.9 ms loss: 0%, Microsoft Corporation, Microsoft Corp, REDMOND, UNITED STATES
+ 

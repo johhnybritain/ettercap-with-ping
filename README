@@ -114,6 +114,12 @@ apt-get install debhelper cmake bison flex libgtk2.0-dev libltdl3-dev libncurses
 ============================================================================
 
  The easiest way to compile ettercap is in the form:
+ [JB] additional steps to prepare LFT for whois lib
+    cd src/lft
+    ./configure
+    cd ../../
+ [JB]
+ 
     mkdir build
     cd build
     cmake ..

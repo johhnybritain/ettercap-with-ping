@@ -45,7 +45,7 @@
 #endif
 
 
-#define MMDBFILE "/usr/local/lib/GeoLite2-City.mmdb";
+#define MMDBFILE NULL;
 
 /* protos... */
 
