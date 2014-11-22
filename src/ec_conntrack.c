@@ -816,8 +816,8 @@ void * pingtrack_print(int mode, void *list, char **desc, size_t len, int ping)
       if ( enable ) {
     	 cp = *desc;
          cnt = snprintf(cp, len, "%c %15s:%-5d - %15s:%-5d %c %s TX: %lu RX: %lu ", flags,
-                                           src, ntohs(c->co->L4_addr1), dst, ntohs(c->co->L4_addr2),
-                                           proto, status, (unsigned long)c->co->tx, (unsigned long)c->co->rx);
+                        src, ntohs(c->co->L4_addr1), dst, ntohs(c->co->L4_addr2),
+                        proto, status, (unsigned long)c->co->tx, (unsigned long)c->co->rx);
          if ( (cnt < len) && ping ) {
         	cp += cnt;
         	len = len - cnt;
