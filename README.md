@@ -23,7 +23,7 @@ Added text UI commands:
 
 Dependencies:
 
-Needs MaxMind C API (if MaxMind enaled, now obsolete with the addition of whois) (http://dev.maxmind.com/geoip/geoip2/downloadable/)
+Needs MaxMind C API (if MaxMind enabled, now obsolete with the addition of whois) (http://dev.maxmind.com/geoip/geoip2/downloadable/)
 
 Needs MaxMind GeoLite2-City.mmdb database (if MaxMind enabled, now obsolete with the addition of whois) (http://dev.maxmind.com/geoip/geoip2/geolite2/)
 
