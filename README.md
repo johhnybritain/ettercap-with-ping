@@ -7,7 +7,7 @@ Developed to intercept traffic for online gaming from consoles like xbox 360, an
 
 Added command line options:
 
--g --geoip2 <file>   to specify location of GeoLite2-City.mmdb file, default is NULL
+-g --geoip2 <file>   to specify location of GeoLite2-City.mmdb file, default is NULL (if GEOIP enabled)
 
 -x --ping <count>    to specify the number of ping packets to send, default is 5
 
@@ -23,9 +23,9 @@ Added text UI commands:
 
 Dependencies:
 
-Needs MaxMind C API (http://dev.maxmind.com/geoip/geoip2/downloadable/)
+Needs MaxMind C API (if MaxMind enabled, now obsolete with the addition of whois) (http://dev.maxmind.com/geoip/geoip2/downloadable/)
 
-Needs MaxMind GeoLite2-City.mmdb database (http://dev.maxmind.com/geoip/geoip2/geolite2/)
+Needs MaxMind GeoLite2-City.mmdb database (if MaxMind enabled, now obsolete with the addition of whois) (http://dev.maxmind.com/geoip/geoip2/geolite2/)
 
 Example Usage:
 
