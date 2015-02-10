@@ -7,15 +7,15 @@ Developed to intercept traffic for online gaming from consoles like xbox 360, an
 
 Added command line options:
 
--g --geoip2 <file>   to specify location of GeoLite2-City.mmdb file, default is NULL (if GEOIP enabled)
+-g --geoip2 \<file\>   to specify location of GeoLite2-City.mmdb file, default is NULL (if GEOIP enabled)
 
--x --ping <count>    to specify the number of ping packets to send, default is 5
+-x --ping \<count\>    to specify the number of ping packets to send, default is 5
 
--X --interval <usec> to specify the ping timeout in microseconds, default is 500000 (0.5 seconds)
+-X --interval \<usec\> to specify the ping timeout in microseconds, default is 500000 (0.5 seconds)
 
--Z --port <port>     to specify the port to use for traceroute
+-Z --port \<port\>     to specify the port to use for traceroute
 
--y --traceroute <cmd> to specify the command to execute to run traceroute, using %d in place of port and %s in place of target host
+-y --traceroute \<cmd\> to specify the command to execute to run traceroute, using %d in place of port and %s in place of target host
 
 
 Added text UI commands:
