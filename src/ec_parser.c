@@ -180,6 +180,8 @@ void ec_usage(void)
    fprintf(stdout, "\nPing options:\n");
    fprintf(stdout, "  -x, --ping <count>          set number of pings\n");
    fprintf(stdout, "  -X, --interval <usec>       set timeout interval for pings in usecs\n");
+   fprintf(stdout, "  -Z, --port <port>           set port for tcp traceroute\n");
+   fprintf(stdout, "  -y, --traceroute <cmd>      set set traceroute command using %d for port, %s for target\n");
 
    fprintf(stdout, "\nStandard options:\n");
    fprintf(stdout, "  -v, --version               prints the version and exit\n");
@@ -262,6 +264,8 @@ void parse_options(int argc, char **argv)
       { "private-key", required_argument, NULL, 0 },
 
       { "geoip2", required_argument, NULL, 'g' },
+      { "port", required_argument, NULL, 'Z' },
+      { "traceroute", required_argument, NULL, 'y' },
 
       
       { 0 , 0 , 0 , 0}
@@ -281,6 +285,8 @@ void parse_options(int argc, char **argv)
    GBL_OPTIONS->ssl_pkey = NULL;
    GBL_OPTIONS->ping = 5;
    GBL_OPTIONS->interval = 500000;
+   GBL_OPTIONS->port = 80;
+   GBL_OPTIONS->traceroute = "lft -d %d %s";
    GBL_OPTIONS->geoip2_file = MMDBFILE;
 
 /* OPTIONS INITIALIZED */
@@ -288,7 +294,7 @@ void parse_options(int argc, char **argv)
    optind = 0;
    int option_index = 0;
 
-   while ((c = getopt_long (argc, argv, "A:a:bB:CchDdEe:F:f:g:GhIi:j:k:L:l:M:m:n:oP:pQqiRr:s:STt:uV:vW:w:x:X:Y:z", long_options, &option_index)) != EOF) {
+   while ((c = getopt_long (argc, argv, "A:a:bB:CchDdEe:F:f:g:GhIi:j:k:L:l:M:m:n:oP:pQqiRr:s:STt:uV:vW:w:x:X:Y:y:zZ:", long_options, &option_index)) != EOF) {
       /* used for parsing arguments */
       char *opt_end = optarg;
       while (opt_end && *opt_end) opt_end++;
@@ -473,6 +479,14 @@ void parse_options(int argc, char **argv)
 
          case 'X':
                   set_interval(optarg);
+                  break;
+
+         case 'Z':
+                  set_port(optarg);
+                  break;
+
+         case 'y':
+		          set_tr(optarg);
                   break;
 
         /* Certificate and private key options */
@@ -704,6 +718,16 @@ void set_ping(char *ping)
 void set_interval(char *interval)
 {
 	GBL_OPTIONS->interval = atoi(interval);
+}
+
+void set_port(char *port)
+{
+	GBL_OPTIONS->port = atoi(port);
+}
+
+void set_tr(char *tr)
+{
+	GBL_OPTIONS->traceroute = strdup(tr);
 }
 
 void set_onlymitm(void)

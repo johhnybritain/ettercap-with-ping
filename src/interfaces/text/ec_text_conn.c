@@ -64,12 +64,15 @@ void text_connections()
 void text_pinger(int ping)
 {
    void *list;
-   char *desc, *tmpdesc;
+   char *desc, *tmpdesc, *tr, *cmd;
+   int  txrxmax = 0;
 
    SAFE_CALLOC(desc, 512, sizeof(char));
+   SAFE_CALLOC(tr, MAX_ASCII_ADDR_LEN, sizeof(char));
+   SAFE_CALLOC(cmd, 256, sizeof(char));
 
    /* retrieve the first element */
-   list = pingtrack_print(0, NULL, NULL, 0, ping);
+   list = pingtrack_print(0, NULL, NULL, 0, NULL, NULL, ping);
 
    fprintf(stdout, "\nActive connection list:\n\n");
 
@@ -77,9 +80,18 @@ void text_pinger(int ping)
    while(list) {
       /* get the next element */
 	  tmpdesc = desc;
-      list = pingtrack_print(+1, list, &tmpdesc, 511, ping);
+      list = pingtrack_print(+1, list, &tmpdesc, 511, &tr, &txrxmax, ping);
       if ( tmpdesc != NULL )
          fprintf(stdout, "%s\n", tmpdesc);
+   }
+   if ( tr != NULL ) {
+	    sprintf(cmd, GBL_OPTIONS->traceroute, GBL_OPTIONS->port, tr);
+	    fprintf(stdout, "exec: %s\n", cmd);
+	    fflush(stdout);
+	    int ret = system(cmd);
+	    if (WIFSIGNALED(ret) &&
+	        (WTERMSIG(ret) == SIGINT || WTERMSIG(ret) == SIGQUIT))
+	    	fprintf(stdout, "command terminated abnormally!");
    }
 
    fprintf(stdout, "\n");

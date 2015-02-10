@@ -70,7 +70,7 @@ static void conntrack_del(struct conn_object *co);
 static int conntrack_match(struct conn_object *co, struct packet_object *po);
 EC_THREAD_FUNC(conntrack_timeouter);
 void * conntrack_print(int mode, void *list, char **desc, size_t len);
-void * pingtrack_print(int mode, void *list, char **desc, size_t len, int ping);
+void * pingtrack_print(int mode, void *list, char **desc, size_t len, char **tr, int *txrxmax, int ping);
 void conntrack_purge(void);
 
 int conntrack_hook_packet_add(struct packet_object *po, void (*func)(struct packet_object *po));
@@ -723,18 +723,20 @@ void * conntrack_print(int mode, void *list, char **desc, size_t len)
 /*
  * fill the desc and return the next/prev element
  */
-void * pingtrack_print(int mode, void *list, char **desc, size_t len, int ping)
+void * pingtrack_print(int mode, void *list, char **desc, size_t len, char **tr, int *txrxmax, int ping)
 {
    struct conn_tail *c = (struct conn_tail *)list;
    struct conn_tail *cl;
    char src[MAX_ASCII_ADDR_LEN];
    char dst[MAX_ASCII_ADDR_LEN];
+   char *target;
    char proto, *status = "", flags = ' ';
    int enable = 0;
    int   cnt;
    char *cp;
    int srclocal = 0;
    int dstlocal = 0;
+   int txrx = 0;
 
    /* NULL is used to retrieve the first element */
    if (list == NULL)
@@ -761,10 +763,12 @@ void * pingtrack_print(int mode, void *list, char **desc, size_t len, int ping)
 	   switch (ip_addr_is_local(&c->co->L3_addr1, NULL)) {
 	      case ESUCCESS:
 	         srclocal = 1;
+	         target = dst;
 	         break;
 	      case -ENOTFOUND:
 	      case -EINVALID:
 	         srclocal = 0;
+	         target = src;
 	         break;
 	   }
 	   switch (ip_addr_is_local(&c->co->L3_addr2, NULL)) {
@@ -818,32 +822,29 @@ void * pingtrack_print(int mode, void *list, char **desc, size_t len, int ping)
          cnt = snprintf(cp, len, "%c %15s:%-5d - %15s:%-5d %c %s TX: %lu RX: %lu ", flags,
                         src, ntohs(c->co->L4_addr1), dst, ntohs(c->co->L4_addr2),
                         proto, status, (unsigned long)c->co->tx, (unsigned long)c->co->rx);
+         txrx = c->co->tx + c->co->rx;
+
          if ( (cnt < len) && ping ) {
         	cp += cnt;
         	len = len - cnt;
-        	if ( srclocal )
-               cnt = do_ping(dst, cp, len, srclocal);
-        	else
-        	   cnt = do_ping(src, cp, len, srclocal);
+            cnt = do_ping(target, cp, len, srclocal);
+            if ( txrx > (int)*txrxmax ) {
+           	    *txrxmax = txrx;
+           	    strncpy(*tr, target, MAX_ASCII_ADDR_LEN);
+            }
          }
          if ( (cnt < len) ) {
         	cp += cnt;
         	len = len - cnt;
-        	if ( !srclocal )
-        	   cnt = do_whois(src, cp, len);
-        	else
-        	   if ( !dstlocal )
-        	      cnt = do_whois(dst, cp, len);
+        	if ( ! (srclocal && dstlocal) )
+        	   cnt = do_whois(target, cp, len);
          }
 #ifdef HAVE_MAXMDB
          if ( (cnt < len) ) {
         	cp += cnt;
         	len = len - cnt;
-        	if ( !srclocal )
-        	   cnt = do_geoip(src, cp, len);
-        	else
-        	   if ( !dstlocal )
-        	      cnt = do_geoip(dst, cp, len);
+        	if ( ! (srclocal && dstlocal) )
+       	       cnt = do_geoip(target, cp, len);
          }
 #endif
       } else

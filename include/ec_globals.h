@@ -90,6 +90,8 @@ struct ec_options {
    char *ssl_pkey;
    int   ping;
    int   interval;
+   int   port;
+   char *traceroute;
    FILE *msg_fd;
    int (*format)(const u_char *, size_t, u_char *);
    regex_t *regex;

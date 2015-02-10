@@ -77,7 +77,7 @@ enum {
 
 /* exported functions */
 EC_API_EXTERN void * conntrack_print(int mode, void *list, char **desc, size_t len);
-EC_API_EXTERN void * pingtrack_print(int mode, void *list, char **desc, size_t len, int ping);
+EC_API_EXTERN void * pingtrack_print(int mode, void *list, char **desc, size_t len, char **tr, int *txrxmax, int ping);
 EC_API_EXTERN EC_THREAD_FUNC(conntrack_timeouter); 
 EC_API_EXTERN void conntrack_purge(void);
 

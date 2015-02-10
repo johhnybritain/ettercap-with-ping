@@ -553,6 +553,7 @@ on ubuntu
 
 config.status:606: creating Makefile
 config.status:606: creating config/acconfig.h
+config.status:841: config/acconfig.h is unchanged
 
 ## ---------------- ##
 ## Cache variables. ##
