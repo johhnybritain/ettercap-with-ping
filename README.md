@@ -67,26 +67,26 @@ Active connection list:
       31.39.57.25:3076  -    192.168.1.19:3076  U active  TX: 3734 RX: 4967 PING SRC No Reply, Bouygues Telecom S.A., BOUYGTEL-ISP-WIRELINE Pool for Broadband DSL Cable customers, VERSAILLES, FRANCE
      192.168.1.19:3076  -   77.102.192.18:3076  U active  TX: 1484 RX: 880 PING DST No Reply, NTL, KNOWSLEY, AIGBURTH, UNITED KINGDOM
      192.168.1.19:51626 - 134.170.178.144:443   T active  TX: 2938 RX: 325 PING DST min/avg/max: 163.0/164.1/165.9 ms loss: 0%, Microsoft Corporation, Microsoft Corp, REDMOND, UNITED STATES
+     exec: lft -d 3389 23.101.173.174
+     Tracing ....****.*......*****.********.T
+     TTL LFT trace to 137.135.178.35:3389/tcp
+     1  192.168.1.1 0.9ms
+     2  10.240.96.1 8.3ms
+     3  bmly-core-2b-xe-030-0.network.virginmedia.net (213.105.193.113) 10.1ms
+     **  [neglected] no reply packets received from TTLs 4 through 6
+     7  tcl5-ic-2-ae0-0.network.virginmedia.net (212.250.15.210) 19.8ms
+     8  m322-mp2.cvx3-a.ltn.dial.ntli.net (213.104.85.66) 19.5ms
+     9  ae7-0.lon04-96cbe-1b.ntwk.msn.net (191.234.81.158) 22.6ms
+     10  ae4-0.nyc-96cbe-1a.ntwk.msn.net (204.152.141.191) 88.8ms
+     11  191.234.84.140 97.8ms
+     12  191.234.81.224 96.1ms
+     13  ae14-0.was02-96cbe-1a.ntwk.msn.net (191.234.82.33) 96.5ms
+     **  [neglected] no reply packets received from TTL 14
+     15  ae31-0.ch1-96c-1b.ntwk.msn.net (191.234.82.115) 125.7ms
+     **  [neglected] no reply packets received from TTLs 16 through 20
+     21  100.73.132.20 114.1ms
+     **  [neglected] no reply packets received from TTLs 22 through 28
+     29  [target open] 137.135.178.35:3389 113.3ms
      
-exec: lft -d 3389 23.101.173.174
-Tracing ....****.*......*****.********.T
-TTL LFT trace to 137.135.178.35:3389/tcp
- 1  192.168.1.1 0.9ms
- 2  10.240.96.1 8.3ms
- 3  bmly-core-2b-xe-030-0.network.virginmedia.net (213.105.193.113) 10.1ms
-**  [neglected] no reply packets received from TTLs 4 through 6
- 7  tcl5-ic-2-ae0-0.network.virginmedia.net (212.250.15.210) 19.8ms
- 8  m322-mp2.cvx3-a.ltn.dial.ntli.net (213.104.85.66) 19.5ms
- 9  ae7-0.lon04-96cbe-1b.ntwk.msn.net (191.234.81.158) 22.6ms
-10  ae4-0.nyc-96cbe-1a.ntwk.msn.net (204.152.141.191) 88.8ms
-11  191.234.84.140 97.8ms
-12  191.234.81.224 96.1ms
-13  ae14-0.was02-96cbe-1a.ntwk.msn.net (191.234.82.33) 96.5ms
-**  [neglected] no reply packets received from TTL 14
-15  ae31-0.ch1-96c-1b.ntwk.msn.net (191.234.82.115) 125.7ms
-**  [neglected] no reply packets received from TTLs 16 through 20
-21  100.73.132.20 114.1ms
-**  [neglected] no reply packets received from TTLs 22 through 28
-29  [target open] 137.135.178.35:3389 113.3ms
 
  
